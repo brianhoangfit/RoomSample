@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,8 +41,7 @@ class MainActivity : AppCompatActivity() {
 
 
         mWordViewModel?.getAllWords()?.observe(this,
-            Observer<List<Word>> { mWordAdapter.setWords(it) })
-
+            Observer<List<Word>> { t -> mWordAdapter.setWords(t) })
 
         fab.setOnClickListener {
 
