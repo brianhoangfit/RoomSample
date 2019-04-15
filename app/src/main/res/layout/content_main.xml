@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recyclerview"
-    android:background="@android:color/darker_gray"
-    tools:listitem="@layout/recycler_view_item"
-    android:layout_height="match_parent">
+    <data>
 
-</androidx.recyclerview.widget.RecyclerView>
+        <variable
+                name="wordAdapter"
+                type="com.brian.roomwordsample.adapter.WordListAdapter"/>
+
+        <variable
+                name="hasFixedSize"
+                type="Boolean"/>
+    </data>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adapter="@{wordAdapter}"
+            android:background="@android:color/darker_gray"
+            app:hasFixedSize="@{hasFixedSize}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/recycler_view_item">
+
+    </androidx.recyclerview.widget.RecyclerView>
+</layout>

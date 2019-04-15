@@ -2,23 +2,25 @@ package com.brian.roomwordsample.view
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.LifecycleOwner
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.brian.roomwordsample.BR
 import com.brian.roomwordsample.R
 import com.brian.roomwordsample.adapter.WordListAdapter
+import com.brian.roomwordsample.databinding.ActivityMainBinding
 import com.brian.roomwordsample.entity.Word
 import com.brian.roomwordsample.viewmodel.WordViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.toast
 
 class MainActivity : AppCompatActivity() {
 
     private var mWordViewModel: WordViewModel? = null
+
+    private lateinit var viewBinding: ActivityMainBinding
 
     companion object {
 
@@ -27,27 +29,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        viewBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         mWordViewModel = ViewModelProviders.of(this).get(WordViewModel::class.java)
 
         val mWordAdapter = WordListAdapter(this)
 
-        recyclerview.apply {
-            setHasFixedSize(true)
-            adapter = mWordAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
-        }
+        viewBinding.apply {
+            setVariable(BR.fabOnClick, View.OnClickListener {
+                addNewWord()
+            })
 
+            includeContentMain.apply {
+                hasFixedSize = true
+                wordAdapter = mWordAdapter
+            }
+        }
 
         mWordViewModel?.getAllWords()?.observe(this,
             Observer<List<Word>> { t -> mWordAdapter.setWords(t) })
+    }
 
-        fab.setOnClickListener {
-
-            val newWordIntent = Intent(this@MainActivity, NewWordActivity::class.java)
-            startActivityForResult(newWordIntent, NEW_WORD_ACTIVITY_REQUEST_CODE)
-        }
+    private fun addNewWord() {
+        val newWordIntent = Intent(this@MainActivity, NewWordActivity::class.java)
+        startActivityForResult(newWordIntent, NEW_WORD_ACTIVITY_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

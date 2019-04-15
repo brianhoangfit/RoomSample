@@ -2,11 +2,11 @@ package com.brian.roomwordsample.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.brian.roomwordsample.R
+import com.brian.roomwordsample.databinding.RecyclerViewItemBinding
 import com.brian.roomwordsample.entity.Word
 
 /**
@@ -21,7 +21,7 @@ class WordListAdapter(context: Context) : RecyclerView.Adapter<WordListAdapter.W
     private var mInflater: LayoutInflater = LayoutInflater.from(context)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
-        return WordViewHolder(mInflater.inflate(R.layout.recycler_view_item, parent, false))
+        return WordViewHolder(DataBindingUtil.inflate(mInflater, R.layout.recycler_view_item, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -31,10 +31,10 @@ class WordListAdapter(context: Context) : RecyclerView.Adapter<WordListAdapter.W
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
         if (mWords != null) {
             val current = mWords!![position]
-            holder.wordItemView.text = current.mWord
+            holder.bind(current)
 
         } else {
-            holder.wordItemView.text = "No word"
+            holder.bind(Word("No Word"))
         }
     }
 
@@ -43,10 +43,12 @@ class WordListAdapter(context: Context) : RecyclerView.Adapter<WordListAdapter.W
         notifyDataSetChanged()
     }
 
-    class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class WordViewHolder(private val itemBinding: RecyclerViewItemBinding) : RecyclerView.ViewHolder(itemBinding.root) {
 
-        val wordItemView : TextView by lazy {
-            itemView.findViewById<TextView>(R.id.textView)
+        fun bind(item: Word) {
+            with(itemBinding) {
+                word = item
+            }
         }
 
 

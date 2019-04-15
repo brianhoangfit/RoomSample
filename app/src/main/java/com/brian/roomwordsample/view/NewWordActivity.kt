@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.annotation.RestrictTo
 import com.brian.roomwordsample.R
 import kotlinx.android.synthetic.main.activity_new_word.*
 
