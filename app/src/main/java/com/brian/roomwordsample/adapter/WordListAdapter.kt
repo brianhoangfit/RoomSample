@@ -48,6 +48,7 @@ class WordListAdapter(context: Context) : RecyclerView.Adapter<WordListAdapter.W
         fun bind(item: Word) {
             with(itemBinding) {
                 word = item
+                executePendingBindings()
             }
         }
 
